@@ -63,7 +63,6 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
  protected:
   bool create_device_characteristics_();
-  bool create_custom_characteristics_();
 
   void add_client_(uint16_t conn_id, void *client) {
     this->clients_.insert(std::pair<uint16_t, void *>(conn_id, client));
@@ -82,7 +81,6 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
   std::vector<std::shared_ptr<BLEService>> services_;
   std::shared_ptr<BLEService> device_information_service_;
-  std::shared_ptr<BLEService> custom_service_;
   BLECharacteristic* custom_light_characteristic_;
 
   std::vector<BLEServiceComponent *> service_components_;

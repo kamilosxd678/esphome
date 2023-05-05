@@ -24,7 +24,6 @@ static const uint16_t MODEL_UUID = 0x2A24;
 static const uint16_t VERSION_UUID = 0x2A26;
 static const uint16_t MANUFACTURER_UUID = 0x2A29;
 
-static const uint16_t CUSTOM_SERVICE_UUID = 0x181C;
 static const uint16_t LIGHT_CHARACTERISTIC_UUID = 0x2A9A;
 
 void BLEServer::setup() {
@@ -60,10 +59,6 @@ void BLEServer::loop() {
 
         this->create_device_characteristics_();
 
-        this->custom_service_ = this->create_service(CUSTOM_SERVICE_UUID);
-
-        this->create_custom_characteristics_();
-
         this->state_ = STARTING_SERVICE;
       }
       break;
@@ -78,20 +73,12 @@ void BLEServer::loop() {
         ESP_LOGD(TAG, "BLE server setup successfully");
       } else if (!this->device_information_service_->is_starting()) {
         this->device_information_service_->start();
-        this->custom_service_->start();
       }
       break;
     }
   }
 }
 
-bool BLEServer::create_custom_characteristics_() {
-  custom_light_characteristic_ =
-      this->custom_service_->create_characteristic(LIGHT_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
-  custom_light_characteristic_->set_value(0);
-
-  return true;
-}
 
 bool BLEServer::create_device_characteristics_() {
   if (this->model_.has_value()) {
@@ -111,6 +98,10 @@ bool BLEServer::create_device_characteristics_() {
   BLECharacteristic *manufacturer =
       this->device_information_service_->create_characteristic(MANUFACTURER_UUID, BLECharacteristic::PROPERTY_READ);
   manufacturer->set_value(this->manufacturer_);
+
+  custom_light_characteristic_ =
+      this->custom_service_->create_characteristic(LIGHT_CHARACTERISTIC_UUID, BLECharacteristic::PROPERTY_READ);
+  custom_light_characteristic_->set_value("TEST");
 
   return true;
 }
