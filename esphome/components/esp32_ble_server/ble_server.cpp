@@ -90,7 +90,7 @@ bool BLEServer::create_device_characteristics_() {
 
   BLECharacteristic *version =
       this->device_information_service_->create_characteristic(VERSION_UUID, BLECharacteristic::PROPERTY_READ);
-  version->set_value("ESPHome " ESPHOME_VERSION);
+  version->set_value("ESPHomexx " ESPHOME_VERSION);
 
   BLECharacteristic *manufacturer =
       this->device_information_service_->create_characteristic(MANUFACTURER_UUID, BLECharacteristic::PROPERTY_READ);
