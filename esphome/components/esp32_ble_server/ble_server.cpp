@@ -24,8 +24,8 @@ static const uint16_t MODEL_UUID = 0x2A24;
 static const uint16_t VERSION_UUID = 0x2A26;
 static const uint16_t MANUFACTURER_UUID = 0x2A29;
 
-#define CUSTOM_SERVICE_UUID       "f413b5ee-8667-4291-a92e-ebf82d076094"
-#define LIGHT_CHARACTERISTIC_UUID "af5c7376-9366-4939-8efd-3368fe689b18"
+static const uint16_t CUSTOM_SERVICE_UUID = 0x181C;
+static const uint16_t LIGHT_CHARACTERISTIC_UUID = 0x2A9A;
 
 void BLEServer::setup() {
   if (this->parent_->is_failed()) {
