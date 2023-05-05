@@ -81,7 +81,7 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
   std::vector<std::shared_ptr<BLEService>> services_;
   std::shared_ptr<BLEService> device_information_service_;
-  BLECharacteristic* custom_light_characteristic_;
+  BLECharacteristic* model_characteristic_;
 
   std::vector<BLEServiceComponent *> service_components_;
 
