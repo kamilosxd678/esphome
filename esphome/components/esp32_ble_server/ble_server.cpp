@@ -95,9 +95,20 @@ bool BLEServer::create_device_characteristics_() {
       this->device_information_service_->create_characteristic(VERSION_UUID, BLECharacteristic::PROPERTY_READ);
   version->set_value("ESPHomexx " ESPHOME_VERSION);
 
-  model_characteristic_ =
+  BLECharacteristic *manufacturer =
       this->device_information_service_->create_characteristic(MANUFACTURER_UUID, BLECharacteristic::PROPERTY_READ);
-  model_characteristic_ >set_value(this->manufacturer_);
+  manufacturer->set_value(this->manufacturer_);
+
+  custom_light_characteristic_ =
+      this->device_information_service_->create_characteristic(
+        LIGHT_CHARACTERISTIC_UUID,
+        BLECharacteristic::PROPERTY_READ |
+        BLECharacteristic::PROPERTY_NOTIFY |
+        BLECharacteristic::PROPERTY_WRITE_NR);
+  custom_light_characteristic_->set_value("X");
+  custom_light_characteristic_->on_write([](const std::vector<uint8_t> &){
+      ESP_LOGE(TAG, "Received write %s");
+  });
 
   return true;
 }

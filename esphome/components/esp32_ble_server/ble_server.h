@@ -61,6 +61,8 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
   void register_service_component(BLEServiceComponent *component) { this->service_components_.push_back(component); }
 
+  BLECharacteristic* getLight() { return custom_light_characteristic_; }
+
  protected:
   bool create_device_characteristics_();
 
@@ -81,7 +83,7 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
   std::vector<std::shared_ptr<BLEService>> services_;
   std::shared_ptr<BLEService> device_information_service_;
-  BLECharacteristic* model_characteristic_;
+  BLECharacteristic* custom_light_characteristic_;
 
   std::vector<BLEServiceComponent *> service_components_;
 
