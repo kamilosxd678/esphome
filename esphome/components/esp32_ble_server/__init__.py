@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, CONF_MODEL, CONF_CHARACTERISTIC_UUID
+from esphome.const import CONF_ID, CONF_MODEL, CONF_CHARACTERISTIC_UUID, CONF_VALUE
 from esphome.components import esp32_ble
 from esphome.core import CORE
 from esphome.components.esp32 import add_idf_sdkconfig_option
@@ -39,7 +39,8 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional("custom_characteristics"): cv.templatable(cv.ensure_list({
             #cv.GenerateID(CONF_ID): cv.use_id(BLEClient),
             cv.Required(CONF_CHARACTERISTIC_UUID): cv.string, #esp32_ble_tracker.bt_uuid,
-            cv.Required("properties"): cv.templatable(cv.ensure_list(cv.one_of(*BLE_PROPERITES, upper=True)))
+            cv.Required("properties"): cv.templatable(cv.ensure_list(cv.one_of(*BLE_PROPERITES, upper=True))),
+            cv.Required(CONF_VALUE): cv.templatable(cv.ensure_list(cv.hex_uint8_t)),
         }))
     }
 ).extend(cv.COMPONENT_SCHEMA)
@@ -63,7 +64,7 @@ async def to_code(config):
         print(config["custom_characteristics"])
         for x in config["custom_characteristics"]:
             print(x)
-            cg.add(var.add_custom_characteristics(x["characteristic_uuid"], x["properties"]))
+            cg.add(var.add_custom_characteristics(x["characteristic_uuid"], '|'.join(x["properties"])))
 
     if CORE.using_esp_idf:
         add_idf_sdkconfig_option("CONFIG_BT_ENABLED", True)
