@@ -28,6 +28,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(esp32_ble.CONF_BLE_ID): cv.use_id(esp32_ble.ESP32BLE),
         cv.Optional(CONF_MANUFACTURER, default="ESPHome"): cv.string,
         cv.Optional(CONF_MODEL): cv.string,
+        cv.Optional("custom_characteristics"): cv.string
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
