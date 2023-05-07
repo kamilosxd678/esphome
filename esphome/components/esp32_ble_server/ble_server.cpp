@@ -81,7 +81,6 @@ void BLEServer::loop() {
 }
 
 void BLEServer::add_custom_characteristics(const std::string &custom_characteristics, const std::vector<esp_gatt_char_prop_t> &properties, const std::vector<uint8_t> &values) {
-
 }
 
 bool BLEServer::create_device_characteristics_() {

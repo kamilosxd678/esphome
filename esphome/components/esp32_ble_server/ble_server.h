@@ -25,12 +25,25 @@ namespace esp32_ble_server {
 
 using namespace esp32_ble;
 
+class BLEServer;
+
 class BLEServiceComponent {
  public:
   virtual void on_client_connect(){};
   virtual void on_client_disconnect(){};
   virtual void start();
   virtual void stop();
+};
+
+class BLECustomCharacteristic {
+ protected:
+  BLECustomCharacteristic(const std::vector<uint8_t>& val, const esp_gatt_char_prop_t& prop) : defalut_value(val), properties(prop) {};
+
+  const std::vector<uint8_t> default_value;
+  const esp_gatt_char_prop_t properties;
+  BLECharacteristic* characteristic;
+
+  friend BLEServer;
 };
 
 class BLEServer : public Component, public GATTsEventHandler, public Parented<ESP32BLE> {
@@ -45,7 +58,7 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
   void set_manufacturer(const std::string &manufacturer) { this->manufacturer_ = manufacturer; }
   void set_model(const std::string &model) { this->model_ = model; }
-  void add_custom_characteristics(const std::string &custom_characteristics, const std::vector<esp_gatt_char_prop_t> &properties, const std::vector<uint8_t> &values);
+  void add_custom_characteristics(const std::string &custom_characteristics, const std::vector<esp_gatt_char_prop_t> &properties, const std::vector<uint8_t> &value);
 
   std::shared_ptr<BLEService> create_service(const uint8_t *uuid, bool advertise = false);
   std::shared_ptr<BLEService> create_service(uint16_t uuid, bool advertise = false);
@@ -81,6 +94,7 @@ class BLEServer : public Component, public GATTsEventHandler, public Parented<ES
 
   uint32_t connected_clients_{0};
   std::map<uint16_t, void *> clients_;
+  std::map<ESPBTUUID, BLECustomCharacteristic> custom_characteristics_;
 
   std::vector<std::shared_ptr<BLEService>> services_;
   std::shared_ptr<BLEService> device_information_service_;
