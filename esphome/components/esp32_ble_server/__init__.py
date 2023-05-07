@@ -67,8 +67,8 @@ async def to_code(config):
             props_ns = cg.esphome_ns.namespace("esp32_ble_server").namespace("BLECharacteristic")
 
             for prop in x["properties"]:
-                ble_props.append(props_ns.prop)
-                
+                ble_props.append(eval(f'props_ns.{prop}'))
+
             cg.add(var.add_custom_characteristics(x["characteristic_uuid"], ble_props))
 
     if CORE.using_esp_idf:
