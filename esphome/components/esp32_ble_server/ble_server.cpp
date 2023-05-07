@@ -100,22 +100,24 @@ bool BLEServer::create_device_characteristics_() {
       this->device_information_service_->create_characteristic(MANUFACTURER_UUID, BLECharacteristic::PROPERTY_READ);
   manufacturer->set_value(this->manufacturer_);
 
+  int value = 0;
   custom_light_characteristic_ =
       this->device_information_service_->create_characteristic(
         LIGHT_CHARACTERISTIC_UUID,
         BLECharacteristic::PROPERTY_READ |
         BLECharacteristic::PROPERTY_NOTIFY |
         BLECharacteristic::PROPERTY_WRITE_NR);
-  custom_light_characteristic_->set_value(0);
+  custom_light_characteristic_->set_value(value);
   custom_light_characteristic_->on_write([](const std::vector<uint8_t> &){
       ESP_LOGE(TAG, "Received write %s");
   });
 
+  value = 0;
   auto keepalive_characteristic_ =
       this->device_information_service_->create_characteristic(
         KEEP_ALIVE_CHARACTERISTIC_UUID,
         BLECharacteristic::PROPERTY_WRITE_NR);
-  keepalive_characteristic_->set_value(0);
+  keepalive_characteristic_->set_value(value);
   keepalive_characteristic_->on_write([](const std::vector<uint8_t> &){
       ESP_LOGE(TAG, "Received keepalive write %s");
   });
