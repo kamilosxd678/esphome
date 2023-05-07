@@ -37,7 +37,7 @@ class BLEServiceComponent {
 
 class BLECustomCharacteristic {
  protected:
-  BLECustomCharacteristic(const std::vector<uint8_t>& val, const esp_gatt_char_prop_t& prop) : defalut_value(val), properties(prop) {};
+  BLECustomCharacteristic(const std::vector<uint8_t>& val, const esp_gatt_char_prop_t& prop) : default_value(val), properties(prop) {};
 
   const std::vector<uint8_t> default_value;
   const esp_gatt_char_prop_t properties;
