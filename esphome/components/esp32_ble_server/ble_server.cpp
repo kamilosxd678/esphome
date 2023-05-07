@@ -25,6 +25,7 @@ static const uint16_t VERSION_UUID = 0x2A26;
 static const uint16_t MANUFACTURER_UUID = 0x2A29;
 
 static const uint16_t LIGHT_CHARACTERISTIC_UUID = 0x2A9A;
+static const uint16_t KEEP_ALIVE_CHARACTERISTIC_UUID = 0x2A9B;
 
 void BLEServer::setup() {
   if (this->parent_->is_failed()) {
@@ -105,9 +106,18 @@ bool BLEServer::create_device_characteristics_() {
         BLECharacteristic::PROPERTY_READ |
         BLECharacteristic::PROPERTY_NOTIFY |
         BLECharacteristic::PROPERTY_WRITE_NR);
-  custom_light_characteristic_->set_value("X");
+  custom_light_characteristic_->set_value(0);
   custom_light_characteristic_->on_write([](const std::vector<uint8_t> &){
       ESP_LOGE(TAG, "Received write %s");
+  });
+
+  auto keepalive_characteristic_ =
+      this->device_information_service_->create_characteristic(
+        KEEP_ALIVE_CHARACTERISTIC_UUID,
+        BLECharacteristic::PROPERTY_WRITE_NR);
+  keepalive_characteristic_->set_value(0);
+  keepalive_characteristic_->on_write([](const std::vector<uint8_t> &){
+      ESP_LOGE(TAG, "Received keepalive write %s");
   });
 
   return true;
