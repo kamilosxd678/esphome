@@ -21,6 +21,14 @@ BLEServer = esp32_ble_server_ns.class_(
 )
 BLEServiceComponent = esp32_ble_server_ns.class_("BLEServiceComponent")
 
+BLE_PROPERITES = {
+    "PROPERTY_READ": 1,
+    "PROPERTY_WRITE": 2,
+    "PROPERTY_NOTIFY": 4,
+    "PROPERTY_BROADCAST": 8,
+    "PROPERTY_INDICATE": 16,
+    "PROPERTY_WRITE_NR": 32
+}
 
 CONFIG_SCHEMA = cv.Schema(
     {
@@ -28,7 +36,11 @@ CONFIG_SCHEMA = cv.Schema(
         cv.GenerateID(esp32_ble.CONF_BLE_ID): cv.use_id(esp32_ble.ESP32BLE),
         cv.Optional(CONF_MANUFACTURER, default="ESPHome"): cv.string,
         cv.Optional(CONF_MODEL): cv.string,
-        cv.Optional("custom_characteristics"): cv.string
+        cv.Optional("custom_characteristics"): cv.templatable(cv.ensure_list({
+            #cv.GenerateID(CONF_ID): cv.use_id(BLEClient),
+            cv.Required(CONF_CHARACTERISTIC_UUID): cv.string, #esp32_ble_tracker.bt_uuid,
+            cv.Required("properties"): cv.templatable(cv.ensure_list(cv.one_of(*BLE_PROPERITES, upper=True)))
+        }))
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
@@ -46,6 +58,9 @@ async def to_code(config):
     if CONF_MODEL in config:
         cg.add(var.set_model(config[CONF_MODEL]))
     cg.add_define("USE_ESP32_BLE_SERVER")
+
+    if "custom_characteristics" in config:
+        cg.add(var.set_custom_characteristics(config["custom_characteristics"]))
 
     if CORE.using_esp_idf:
         add_idf_sdkconfig_option("CONFIG_BT_ENABLED", True)
