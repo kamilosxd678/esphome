@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, CONF_MODEL
+from esphome.const import CONF_ID, CONF_MODEL, CONF_CHARACTERISTIC_UUID
 from esphome.components import esp32_ble
 from esphome.core import CORE
 from esphome.components.esp32 import add_idf_sdkconfig_option
