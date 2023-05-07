@@ -69,7 +69,7 @@ async def to_code(config):
             for prop in x["properties"]:
                 ble_props.append(eval(f'props_ns.{prop}'))
 
-            cg.add(var.add_custom_characteristics(x["characteristic_uuid"], ble_props))
+            cg.add(var.add_custom_characteristics(x["characteristic_uuid"], ble_props, x["value"]))
 
     if CORE.using_esp_idf:
         add_idf_sdkconfig_option("CONFIG_BT_ENABLED", True)
