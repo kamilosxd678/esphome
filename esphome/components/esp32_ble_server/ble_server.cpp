@@ -108,9 +108,7 @@ bool BLEServer::create_device_characteristics_() {
         BLECharacteristic::PROPERTY_NOTIFY |
         BLECharacteristic::PROPERTY_WRITE_NR);
   custom_light_characteristic_->set_value(value);
-  custom_light_characteristic_->on_write([](const std::vector<uint8_t> &){
-      ESP_LOGE(TAG, "Received write %s");
-  });
+  custom_light_characteristic_->on_write([](const std::vector<uint8_t> &){});
 
   value = 0;
   auto keepalive_characteristic_ =
@@ -118,9 +116,7 @@ bool BLEServer::create_device_characteristics_() {
         KEEP_ALIVE_CHARACTERISTIC_UUID,
         BLECharacteristic::PROPERTY_WRITE_NR);
   keepalive_characteristic_->set_value(value);
-  keepalive_characteristic_->on_write([](const std::vector<uint8_t> &){
-      ESP_LOGE(TAG, "Received keepalive write %s");
-  });
+  keepalive_characteristic_->on_write([](const std::vector<uint8_t> &){});
 
   return true;
 }
