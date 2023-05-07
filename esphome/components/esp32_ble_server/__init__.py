@@ -60,6 +60,7 @@ async def to_code(config):
     cg.add_define("USE_ESP32_BLE_SERVER")
 
     if "custom_characteristics" in config:
+        print(config["custom_characteristics"])
         cg.add(var.set_custom_characteristics(config["custom_characteristics"]))
 
     if CORE.using_esp_idf:
