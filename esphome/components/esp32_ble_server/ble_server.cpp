@@ -118,6 +118,14 @@ bool BLEServer::create_device_characteristics_() {
   keepalive_characteristic_->set_value(value);
   keepalive_characteristic_->on_write([](const std::vector<uint8_t> &){});
 
+  value = 0;
+  auto test_characteristic_ =
+      this->device_information_service_->create_characteristic(
+        "eafecff6-0f36-4c5e-8616-f51fdcbfc723",
+        BLECharacteristic::PROPERTY_WRITE_NR);
+  test_characteristic_->set_value(value);
+  test_characteristic_->on_write([](const std::vector<uint8_t> &){});
+
   return true;
 }
 
