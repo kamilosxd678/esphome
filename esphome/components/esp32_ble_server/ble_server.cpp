@@ -100,7 +100,7 @@ bool BLEServer::create_device_characteristics_() {
       this->device_information_service_->create_characteristic(MANUFACTURER_UUID, BLECharacteristic::PROPERTY_READ);
   manufacturer->set_value(this->manufacturer_);
 
-  int value = 0;
+  uint8_t value = 0;
   custom_light_characteristic_ =
       this->device_information_service_->create_characteristic(
         LIGHT_CHARACTERISTIC_UUID,
