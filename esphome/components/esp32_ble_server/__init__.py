@@ -63,7 +63,8 @@ async def to_code(config):
     if "custom_characteristics" in config:
         print(config["custom_characteristics"])
         for x in config["custom_characteristics"]:
-            cg.add(var.add_custom_characteristics(x["characteristic_uuid"], cg.global_ns('|'.join())))
+            print(x)
+            cg.add(var.add_custom_characteristics(x["characteristic_uuid"], cg.global_ns('|'.join(x["properties"]))))
 
     if CORE.using_esp_idf:
         add_idf_sdkconfig_option("CONFIG_BT_ENABLED", True)
